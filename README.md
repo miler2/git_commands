@@ -1,143 +1,115 @@
-# Basic API with node.js
-Aquí estoy demostrando cómo usar una API desde cero, con una base de datos propia y otras dependencias importantes.
+# Commands for Git
 
+## Visualize log
 
-## Dependencies
-
-- express 
-
-    This is an important dependency for our API.
-
-    Can be installed with the command:
-    ```
-    npm install --save express
-    ```
-
-- nodemon 
-
-    This is so that we don't have to restart the service every time we make changes. It does that automatically.
-
-    Can be installed with the command:
-    ```
-    npm install --save-dev nodemon
-    ```
-
-    Can be executed with:
-    ```
-    nodemon [direccion_archivo]
-    ```
-
-- morgan 
-
-    Works to see the petitions log for the API in the console.
-
-    Can be installed with the command:
-    ```
-    npm install --save morgan
-    ```
-
-- body-parser 
-
-    Used for formating the code for languages like JSON.
-
-    Can be installed with the command:
-    ```
-    npm install --save-dev body-parser
-    ```
-
-- mariadb 
-
-    I have been using mariadb as a database, so we would have to install it's dependency to use it.
-    If you use any other database provider, like MySQL, then you would have to install MySQL's dependency, and not mariadb's.
-
-    Can be installed with the command:
-    ```
-    npm install mariadb
-    ```
-- sequelize
-
-    This one is for defining models (like objects) in our API that represent database tables so we can more easily interact with the database.
-
-    Can be installed with the command:
-
-    ```
-    npm install sequelize
-    ```
-
- 
-All these dependencies can be installed with one single command:
+Este comando nos muestra el historial de cambios realizados en el branch actual.
 
 ```
-npm install express morgan body-parser nodemon mariadb sequelize --save
+git log
 ```
+
+Esto nos muestra el historial de cambios realizados en el branch actual de una forma más legible (solo en una línea). 
+
+```
+git log --oneline
+```
+
+
+## Undoing things
+
+### <ins>Checkout commit</ins>
+
+Mostrar cómo estaba un commit específico sin hacer cambios.
+
+```
+git checkout [id_commit]
+```
+
+*Para volver al estado actual y seguir haciendo cambios:*
+
+```
+git checkout [nombre_branch] 
+```
+
+
+### <ins>Revert commit</ins>
+
+Revertir un commit cualquiera, y hacer como si no se hubiera hecho ese commit. 
+
+```
+git revert [id_commit_a_eliminar]
+```
+
+
+### <ins>Reset commit</ins>
+
+**ATENCION**: Cuidado con usar este comando, porque cuando se ejecute, ya no hay vuelta atrás, se perderán todos los commits posteriores al que hemos elegido volver.
+
+Volver a un commit anterior y eliminar los commits que se hicieron después del que volvimos.
 
  
 
- 
-
-## Launch the API
-
-To create the project from scratch you would have to use the command below. This command will generate us a series of questions to generate the project,
-and generate with it the main archive (we can name it however we want).
- 
-```
-npm init
-``` 
-
-This command will prompt us with a series of questions, and most of them can be left blanc. 
-
->package name: (api)  
->version: (l.0.0)  
->description :  
->entry point: (index.js)  
->test command:  
->git repository:  
->keywords :  
->author: miler  
->license: (ISC)  
-
-
-It will leave us with these archives:
-
-![](README_images/archivos.png)
-
-
-
-To launch the API we will have to execute the following command:
+Usar opción **--hard** si queremos eliminar los cambios incluso en nuestros archivos dentro del editor. 
 
  
 ```
-Node [ruta_archivo]
+git reset [id_commit] --hard 
 ```
+
+
+## Creating branches
+
+Este comando nos crea un branch nuevo. 
+
+```
+git branch [nombre_branch] 
+```
+
+
+
+Este comando muestra los branches que tenemos, tanto en local, como en remoto. 
+
+*-a: Esta opción nos pide mostrar todos los branches, incluyendo los remotos.*
+
+```
+git branch –a 
+```
+
+
+Este comando nos crea la rama y nos mete dentro de ella para empezar a hacer cambios.
+
+*checkout: Indica que queremos ir a esa rama (no existe la rama ahora mismo).*
+
+*-b: Como no existe la rama, esta opción la crea.*
+
+```
+git checkout –b [nombre_branch] 
+```
+
+
+Este comando elimina una rama.
+
+```
+git branch –D [nombre_branch] 
+```
+
+*-D: Elimina una rama.*
+
+
+## Merging branches 
 
  
-This command will continue being executed untill we stop it manually (Ctrl + C). The changes done to the files will not be saved until we stop this command and start it again manually. This can be changed with **nodemon**, which allows us to save the changes to the project and it will restart it automatically.
 
-This command executes nodemon from the main archive of the project:
+Si queremos añadir nuestros cambios de un branch <ins>[branch-a]</ins> a nuestro branch principal <ins>[main]</ins>, lo que tenemos que hacer es irnos a la rama a la que queremos añadir todos los cambios <ins>[main]</ins>, y luego ejecutar el comando merge con el nombre del branch que le queremos añadir:  
+
 ```
-nodemon [ruta_archivo] 
+git merge [branch-a]
 ```
 
+Si hay conflictos porque el archivo al que se le quiere hacer el merge <ins>[main]</ins> tiene unos cambios que nosotros no teníamos en nuestro branch <ins>[branch-a]</ins>, entonces tendremos que decirle al archivo qué cambios queremos mantener, y cuáles no (qué quiere mantener/quitar del branch <ins>[main]</ins> y qué quiere mantener/quitar del branch <ins>[branch-a]</ins>). Probablemente nos mostrará en la consola un archivo con el editor vim. Para salir de vim tendremos que escribir ":wq", esto nos guarda el archivo (w), y nos saca de éste (q). 
 
-This command is so that when we update indirect files (like files out of the main directory), it will still be watching those files, and activate nodemon automatically.
- 
-```
-tsc --watch 
-```
+Después de hacer esto, tendremos que hacer un commit de nuevo. 
+
  
 
-
-## Other notes (old)
-
-I had to add this line which launches our server and executes the specified command (in this case "nodemon server.js"). This is because nodemon cannot be executed from any file, however, if we write this line in the package JSON file, it will execute nodemon from the main file.
-
->dev": "nodemon server.js
-
-![](./README_images/packageJson.png)
-
-
-This command launches the api:
-
-```
-npm run dev
-```
+ 
