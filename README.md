@@ -14,6 +14,12 @@ Esto nos muestra el historial de cambios realizados en el branch actual de una f
 git log --oneline
 ```
 
+Este comando muestra todos los cambios en una forma más visual sobre todas las ramas.
+
+```
+git log --all --graph
+```
+
 
 ## Undoing things
 
